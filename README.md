@@ -1,10 +1,22 @@
-# MyBaumWelch
+# An Implementation of the Baum-Welch Algorithm
 
 Author: Aidan Clark
 
-Date: 6/20/2024
+Date: 6/27/2024
 
 This is an R implementation of the Baum-Welch algorithm for estimating the parameters of a Hidden Markov Model, assuming normally distributed emissions. I wrote this code as part of a group project for my Computational Statistics class, where my group tested the Baum-Welch algorithm on simulated Hidden Markov Model emissions. One of my tasks for this project was to implement the Baum-Welch algorithm from scratch. You can find the functions I wrote in [this file](BaumWelchAlgo.R). An explanation of the model, the algorithm, and all underlying assumptions is below.
+
+### The Gist
+
+If you're interested in probability-speak, see the two sections below. For a (hopefully) non-technical explanation of the problem this code tries to solve, read further!
+
+Let's say that we have a chain of events where the "state" of each event depends only on the previous event in the chain. As a rough example, let's say our chain of events is "Days in February" and the states we are interested in are "Snow" and "No Snow." The chances of it snowing on February 15th are perhaps different depending on whether or not it snowed on February 14th. We call this chain a Markov Chain.
+
+In a Hidden Markov Model, we do not know the state of the Markov Chain at any given time! That is, the events in the Markov Chain are latent or hidden. Instead, each event in the chain-- in the above example, each day in February -- gives off an "emission." The value of each emission is random, but it depends on the state of the chain at that time. To continue the snow example, let's say that we don't want to look outside to see if it's snowing, but instead we look only at temperature readings. We would expect that, on average, days where it snows would be colder than days where it doesn't snow.
+
+Of course, a temperature reading like 20 $^{\circ}$F could very well come from a snowy day or a non-snowy day. We can't be certain, based solely off the emission value, what state the chain was in. Therein lies the problem: given only the emissions-- the temperatures-- how can we reliably predict the state sequence-- snow or no snow-- of the underlying Markov Chain. Moreover, how can we predict the parameters underlying our Hidden Markov Model. These parameters include probabilities, such as the probability that we go from a snowy day to a non-snowy day, and information about our emissions, such as a typical temperature range for snowy days. The Baum-Welch algorithm, using various probability tricks and manipulations, estimates these parameters. Very generally, given a sequence of emissions, the algorithm picks the parameter values that maximize the chances of observing the emission sequence that we did.
+
+I hope that this explanation gives you some intuition about Hidden Markov Models and the problem of estimating their underlying parameters!
 
 ### Hidden Markov Models
 
